@@ -1,6 +1,18 @@
-version: '3'
-
 services:
+  parser:
+    build: ./parser
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./parser:/usr/src/app
+
   mysql:
     build: ./mysql
     environment:
@@ -13,6 +25,12 @@ services:
     volumes:
       - mysql:/var/lib/mysql
       - ./mysql/conf.d:/etc/mysql/conf.d
+    healthcheck:
+        test: mysqladmin ping -h 127.0.0.1 -u${MYSQL_USER} -p${MYSQL_PASSWORD}
+        interval: 1s
+        timeout: 4s
+        retries: 20
+        start_period: 10s
 
 volumes:
   mysql:
