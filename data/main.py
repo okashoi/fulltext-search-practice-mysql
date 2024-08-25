@@ -30,6 +30,9 @@ for file_name in file_names:
             if ruler_count < 2:
                 continue
 
+            if line.startswith('底本：'):
+                break
+
             # 入力者注やルビの削除
             line = re.sub(r'［＃.+?］', '', line)
             line = re.sub(r'《.+?》', '', line)
