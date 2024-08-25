@@ -14,7 +14,7 @@ for file_name in file_names:
         ruler_count = 0
         sentence_position = 1
         for line in fin:
-            line = line.strip().encode('utf-8', 'replace').decode('utf-8', 'replace')
+            line = line.strip()
             if not line:
                 continue
 
