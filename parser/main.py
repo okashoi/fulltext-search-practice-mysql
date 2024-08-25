@@ -1,6 +1,34 @@
 import os
 import re
 
+import mysql.connector
+
+config = {
+  'user': os.environ.get('MYSQL_USER'),
+  'password': os.environ.get('MYSQL_PASSWORD'),
+  'host': os.environ.get('MYSQL_HOST'),
+  'database': os.environ.get('MYSQL_DATABASE'),
+  'raise_on_warnings': True,
+}
+
+conn = mysql.connector.connect(**config)
+
+def insert_work(work_title):
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO `works` (`title`) VALUES (%s)', (work_title,))
+    conn.commit()
+    work_id = cursor.lastrowid
+    cursor.close()
+    return work_id
+
+def insert_sentect(work_id, position, content):
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO `sentences` (`work_id`, `position`, `content`) VALUES (%s, %s, %s)', (work_id, position, content))
+    conn.commit()
+    sentence_id = cursor.lastrowid
+    cursor.close()
+    return sentence_id
+
 DATA_DIR = 'data'
 
 file_names = os.listdir(DATA_DIR)
@@ -20,6 +48,7 @@ for file_name in file_names:
 
             if not work_title:
                 work_title = line
+                work_id = insert_work(work_title)
                 continue
             if not author:
                 author = line
@@ -44,9 +73,11 @@ for file_name in file_names:
             for c in line:
                 sentence += c
                 if c == '。':
-                    print(work_title, author, sentence_position, sentence)
+                    insert_sentect(work_id, sentence_position, sentence)
                     sentence_position += 1
                     sentence = ''
             if sentence:
-                print(work_title, author, sentence_position, sentence)
+                insert_sentect(work_id, sentence_position, sentence)
                 sentence_position += 1
+
+conn.close()
