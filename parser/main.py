@@ -1,13 +1,14 @@
 import os
 import re
 
+DATA_DIR = 'data'
 
-file_names = os.listdir()
+file_names = os.listdir(DATA_DIR)
 
 for file_name in file_names:
     if not file_name.endswith('.txt'):
         continue
-    with open(file_name, 'r', encoding='shift-jis') as fin:
+    with open(os.path.join(DATA_DIR, file_name), 'r', encoding='shift-jis') as fin:
         work_title = ''
         author = ''
         ruler_count = 0
