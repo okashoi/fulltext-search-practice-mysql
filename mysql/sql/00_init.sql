@@ -1,5 +1,5 @@
 create table `works` (
-  `id` int unsigned not null primary key comment '作品ID',
+  `id` int unsigned not null auto_increment primary key comment '作品ID',
   `title` varchar(255) not null comment '作品名'
 ) comment '作品';
 
