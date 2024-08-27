@@ -19,3 +19,17 @@
 Docker および Docker Compose について知りたい場合は、別途実施した研修資料を参考にしてください。
 
 [バックエンドセクション研修資料 Docker, Docker Compose, KVS](https://github.com/willgate-dev/backend_training_docker)
+
+## 全文検索用のデータ準備
+
+WIP
+
+このリポジトリには全文検索用のデータを生成するために、[青空文庫](https://www.aozora.gr.jp/)にアップロードされているテキストファイルを簡易的に文単位で区切って MySQL に保存するスクリプトが含まれています。
+
+parser/data ディレクトリ下に青空文庫からダウンロードしてきたテキストファイル（複数可）を設置した状態で、以下のコマンドを実行することで MySQL にデータを投入できます。
+
+```bash
+docker compose run --rm parser
+```
+
+なお、研修資料本文では夏目漱石が著者である作品を用いています。
